@@ -55,7 +55,8 @@ mins = [0, 0] #meters
 maxs = [width, sum(heights)] #meters
 coords, neighbors, areasoverlengths, volumes = DPFEHM.regulargrid2d(mins, maxs, ns, thickness)
 # Set up the eigenvector parameterization of the geostatistical log-permeability field
-num_eigenvectors = 200
+# num_eigenvectors = 200
+num_eigenvectors = 15
 sigma = 1.0
 lambda = 50
 mean_log_conductivities = [log(1e-4), log(1e-8), log(1e-3)] #log(1e-4 [m/s]) -- similar to a pretty porous oil reservoir
@@ -115,10 +116,12 @@ end
 #play with these four numbers to make the fractures more or less likely to enable lots of flow from the lower reservoir to the upper reservoir
 horizontal_fracture_mean_conductivity = log(1e-10)
 vertical_fracture_mean_conductivity = log(1e-10)
-horizontal_fracture_sigma_conductivity = 10
+# horizontal_fracture_sigma_conductivity = 10
 vertical_fracture_sigma_conductivity = 10
-x2logKs(x) = log.(exp.(sum(masks[i]' .* reshape(parameterization * (sigmas .* x[(i - 1) * num_eigenvectors + 1:i * num_eigenvectors]) .+ mean_log_conductivities[i], ns...) for i = 1:3)') + horizontal_fracture_mask * exp(horizontal_fracture_mean_conductivity + horizontal_fracture_sigma_conductivity * x[end - 1]) + vertical_fracture_mask * exp(vertical_fracture_mean_conductivity + vertical_fracture_sigma_conductivity * x[end]))
-logKs = x2logKs(randn(3 * num_eigenvectors + 2))
+# x2logKs(x) = log.(exp.(sum(masks[i]' .* reshape(parameterization * (sigmas .* x[(i - 1) * num_eigenvectors + 1:i * num_eigenvectors]) .+ mean_log_conductivities[i], ns...) for i = 1:3)') + horizontal_fracture_mask * exp(horizontal_fracture_mean_conductivity + horizontal_fracture_sigma_conductivity * x[end - 1]) + vertical_fracture_mask * exp(vertical_fracture_mean_conductivity + vertical_fracture_sigma_conductivity * x[end]))
+x2logKs(x) = log.(exp.(sum(masks[i]' .* reshape(parameterization * (sigmas .* x[(i - 1) * num_eigenvectors + 1:i * num_eigenvectors]) .+ mean_log_conductivities[i], ns...) for i = 1:3)') + vertical_fracture_mask * exp(vertical_fracture_mean_conductivity + vertical_fracture_sigma_conductivity * x[end]))
+
+logKs = x2logKs(randn(3 * num_eigenvectors + 1))
 if plotstuff
     fig, ax = PyPlot.subplots()
     ax.imshow(logKs, origin="lower")
