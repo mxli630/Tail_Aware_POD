@@ -1,6 +1,6 @@
 # Reduced Order Modeling with Large Deviation Theory
 
-This repository provides code for generating **Reduced Order Models (ROMs)** for randomly parameterized PDE systems, with a focus on **accurate prediction of rare tail events**.  
+This repository provides code for generating **Reduced Order Models (ROMs)** for PDE systems with random parameters, with a focus on **accurate prediction of rare tail events**.  
 
 The approach combines:
 - **Proper Orthogonal Decomposition (POD)** for reduced basis construction  
@@ -37,3 +37,18 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
 1. **Clone DPFEHM**  
    ```bash
    git clone https://github.com/lanl/DPFEHM.git
+2. **Clone this repository** inside the same parent directory:
+   ```bash
+   git clone https://github.com/mxli630/Tail_Aware_POD.git
+
+   The directory structure should look like:
+   parent_folder/
+  ├── DPFEHM/
+  └── Tail_Aware_POD/
+
+3. **Install Julia dependencies**
+   Open Julia inside this repo and run:
+   ```julia
+   using Pkg
+  Pkg.activate(".")
+  Pkg.instantiate()
