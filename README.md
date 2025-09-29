@@ -53,6 +53,6 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
    Open Julia inside this repo and run:
    ```julia
    using Pkg
-  Pkg.activate(".")
-  Pkg.instantiate()
-  ```
+   Pkg.activate(".")
+   Pkg.instantiate()
+
