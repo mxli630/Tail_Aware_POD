@@ -40,6 +40,7 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
 2. **Clone this repository** inside the same parent directory:
    ```bash
    git clone https://github.com/mxli630/Tail_Aware_POD.git
+   ```
 
    The directory structure should look like:
    parent_folder/
