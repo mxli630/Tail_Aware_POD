@@ -43,11 +43,13 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
    ```
 
    The directory structure should look like:
+   ```
    parent_folder/
-  ├── DPFEHM/
-  └── Tail_Aware_POD/
+   ├── DPFEHM/
+   └── Tail_Aware_POD/
+  ```
 
-3. **Install Julia dependencies**
+4. **Install Julia dependencies**
    Open Julia inside this repo and run:
    ```julia
    using Pkg
