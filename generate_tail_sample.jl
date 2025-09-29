@@ -11,4 +11,4 @@ x_res = res[1];
 
 x_tail, h_tail, f_tail, isweight_tail = sample_around_optimizer(x_res)
 
-@save "sampled_tails.jld2" x_tail, h_tail, f_tail, isweight_tail;
+@save "sampled_tails.jld2" x_tail h_tail f_tail isweight_tail;
