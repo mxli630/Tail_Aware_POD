@@ -18,3 +18,4 @@ tail_x = all_x_sorted[:,1:100]
 tail_h = all_h_sorted[:,1:100]
 
 ge_aroundIS, pe_aroundIS, f_aroundIS, gm_aroundIS, pm_aroundIS = reduced_model_error(tail_x, tail_h, nmode, V_tailIS)
+@save "ROM_errors.jld2" ge_aroundIS pe_aroundIS f_aroundIS gm_aroundIS pm_aroundIS;
