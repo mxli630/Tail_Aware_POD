@@ -17,16 +17,24 @@ The approach combines:
   Core functions implementing POD, weighting, sampling, and ROM construction  
 
 - `external/`  
-  Example setup borrowed from [DPFEHM](https://github.com/lanl/DPFEHM):  
-  steady-state 2D Darcy flow with a random Gaussian log-permeability field (via KL expansion), including a **caprock with vertical fractures**  
+  Contains the setup for a **steady-state 2D Darcy flow** example with a random Gaussian log-permeability field (via KL expansion), including a **caprock with vertical fractures**.
+  This example was adapted from [DPFEHM](https://github.com/lanl/DPFEHM), and the necessary file has been copied here so that the repository runs standalone.  
+
 
 - `brute_force_sampling.jl`  
   Generates **10,000 brute force samples**, used for:  
   - Identifying tail events  
   - Building a reference test set  
 
+- `generate_tail_sample.jl`  
+  Runs the **LDT-based sampling**:  
+  - Computes the LDT optimizer  
+  - Shifts the mean to the optimizer and samples around it  
+  - Applies importance and tail weights  
+  - Produces weighted snapshots for ROM construction  
+
 - `reduced_model.jl`  
-  Runs the **LDT-based sampling** and constructs the Reduced Order Model using weighted POD  
+  Constructs the **Reduced Order Model** from the LDT-based samples (e.g., builds the reduced POD basis and solves the reduced problem).  
 
 ---
 
@@ -34,25 +42,40 @@ The approach combines:
 
 This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).  
 
-1. **Clone DPFEHM**  
-   ```bash
-   git clone https://github.com/lanl/DPFEHM.git
-2. **Clone this repository** inside the same parent directory:
+1. **Clone this repository**  
    ```bash
    git clone https://github.com/mxli630/Tail_Aware_POD.git
-   ```
-
-   The directory structure should look like:
-   ```
-   parent_folder/
-   ├── DPFEHM/
-   └── Tail_Aware_POD/
+   cd Tail_Aware_POD
 
 
-4. **Install Julia dependencies**
+2. **Install Julia dependencies**
    Open Julia inside this repo and run:
    ```julia
    using Pkg
    Pkg.activate(".")
    Pkg.instantiate()
+
+## Usage
+1. **Brute Force Sampling**
+   Generate 10,000 samples for baseline and test sets:
+   ```bash
+   julia brute_force_sampling.jl
+   ```
+   **Outputs**: two ``.jld2`` files will be saved in the current directory. These contain the brute force parameters and the corresponding QoI.
+
+2. **Tail_Aware Sampling**
+   Run the LDT-based sampling:
+   ```bash
+   julia generate_tail_sample.jl
+   ```
+   **Outputs**: one ``.jld2`` file will be saved in the current directory, containing the LDT-shifted parameters, snapshots (solutions to the PDE), QoI, and IS weights.
+
+3. **Reduced Model Construction**
+   Build the reduced order model from the LDT-based samples:
+   ```bash
+   julia reduced_model.jl
+   ```
+   **Outputs**: one ``.jld2`` file will be saved in the current directory, containing a series of reduced model related errors.
+
+   
 
