@@ -1,9 +1,11 @@
-include("weeds_fracture.jl")
+include(joinpath(@__DIR__, "external", "weeds_fracture.jl"))
 using Statistics
 using Plots
 using SciPy
 import KernelDensity
+import Random
 Random.seed!(1)
+using FileIO, JLD2
 
 isfreenode, nodei2freenodei, freenodei2nodei = DPFEHM.getfreenodes(length(Qs), dirichletnodes)
 ns_reverse = [201,101]
