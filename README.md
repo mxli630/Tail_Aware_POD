@@ -47,7 +47,7 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
    parent_folder/
    ├── DPFEHM/
    └── Tail_Aware_POD/
-  ```
+
 
 4. **Install Julia dependencies**
    Open Julia inside this repo and run:
@@ -55,3 +55,4 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
    using Pkg
   Pkg.activate(".")
   Pkg.instantiate()
+  ```
