@@ -21,33 +21,26 @@ The approach combines:
 - **Random medium:** the **log-permeability** field is modeled as a **Gaussian Random Field (GRF)** and **parameterized by a truncated Karhunen–Loève (KL) expansion**.
 - **KL parameterization (truncated to `M` modes):**
 
-  $\log K(z) \;=\; \mu \;+\; \sum_{i=1}^M \underbrace{s_i \sqrt{\lambda_i}}_{\text{uncertainty scale}} \; x_i \; \phi_i(z)$,
-
+  $\log K(z) = \mu + \sum_{i=1}^M \sqrt{\lambda_i} x_i \phi_i(z),$
   where
   - $\mu$ is the mean log-permeability,
   - $(\lambda_i, \phi_i)$ are KL eigenpairs of the GRF covariance,
-  - $s_i$ are **uncertainty/scale constants per mode** (see §3),
   - $x = (x_1,\dots,x_M)$ are the **independent parameters**.
 
-- **Parameter prior:** by default we take the **KL coefficients \(x_i\) to be independent standard normals**,  
-  \[
-  x \sim \mathcal N(0, I_M).
-  \]
-  (If you instead treat the *scaled* coefficients \(\xi_i = s_i \sqrt{\lambda_i}\, x_i\) as Gaussian with non-unit variances, adjust the rate function accordingly; see §2 and §3.)
+- **Parameter prior:** by default we take the **KL coefficients $x_i$ to be independent standard normals**,  
+  $x \sim \mathcal N(0, I_M).$
 
-- **Quantity of Interest (QoI):** a scalar functional extracted from each forward solve (examples: breakthrough time at a sensor, max hydraulic head over the domain, flux through an outflow boundary, etc.). See **§2.2** for how/where to set your QoI.
+- **Quantity of Interest (QoI):** a scalar functional extracted from each forward solve (examples: breakthrough time at a sensor, max hydraulic head over the domain, flux through an outflow boundary, etc.). In our example, we set the QoI as the pressure head at a critical point.
 
 ---
 
 ## 2) LDT Ingredients You Must Define
 
-### 2.1 Rate Function \(I(\cdot)\)
+### 2.1 Rate Function $I(\cdot)$
 The **rate function** encodes the prior on parameters and governs the tail-biased sampling:
 
-- **If the parameters are the standardized KL coefficients \(x \sim \mathcal N(0, I)\):**
-  \[
-  I(x) \;=\; \tfrac12 \|x\|_2^2 \;=\; \tfrac12 \sum_{i=1}^M x_i^2.
-  \]
+- **If the parameters are the standardized KL coefficients $x \sim \mathcal N(0, I)$:**
+  $I(x) = \tfrac12 \|x\|_2^2 = \tfrac12 \sum_{i=1}^M x_i^2.$
 
 - **If the parameters are the *scaled* coefficients \(\xi_i = s_i\sqrt{\lambda_i}\,x_i\) with \(\xi \sim \mathcal N(0, \mathrm{diag}(\sigma_1^2,\dots,\sigma_M^2))\):**
   \[
