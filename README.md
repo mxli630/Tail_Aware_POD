@@ -30,7 +30,7 @@ Any new application only requires redefining the **rate function** and the **QoI
 
 - `external/`  
   Contains the setup for a **steady-state 2D Darcy flow** example with a random Gaussian log-permeability field (via KL expansion), including a **caprock with vertical fractures**.
-  This example was adapted from [DPFEHM]((https://github.com/OrchardLANL/DPFEHM.jl.git)), and the necessary file has been copied here so that the repository runs standalone.  
+  This example was adapted from [DPFEHM](https://github.com/OrchardLANL/DPFEHM.jl), and the necessary file has been copied here so that the repository runs standalone.  
 
 
 - `brute_force_sampling.jl`  
