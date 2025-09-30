@@ -1,3 +1,28 @@
+# ================================================================
+# generate_tail_sample.jl
+#
+# Purpose:
+#   Run LDT-guided sampling to generate "tail" parameter realizations
+#   and evaluate the Quantity of Interest (QoI).
+#
+# Notes:
+#   - The rate function is `penalty_func_lambda(x,mu,lambda)`
+#   - The rate function depends on the constants `mu`, `lambda`,
+#     and `z`.
+#   - `mu` and `lambda` are defined for numerical purpose, so that
+#     the optimization program can successfully converge.
+#   - `z` is the value for where the tail of QoI starts. In our 
+#     example, the tail is chosen as the top 1% of QoI.
+#   - The rate function depends on constants associated with the
+#     log permeability field, QoI, definition of tail. If you
+#     changed anything related, you must update the constants  
+#      as well.
+#
+# Outputs:
+#   The `sampled_tails.jld2` file that contains the sampled 
+#   parameters, snapshots, QoIs, and the importance sampling weight.
+# ================================================================
+
 include("supplement_functions.jl")
 
 penalty_func_lambda(x, mu, lambda, z) = 0.05*(transpose(x)*x) - lambda*(f(x) - z) + (mu/2)*((f(x) - z)^2);
