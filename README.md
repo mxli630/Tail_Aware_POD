@@ -80,7 +80,7 @@ This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).
    Pkg.activate(".")
    Pkg.instantiate()
 
-## Usage
+## 5. Usage
 1. **Brute Force Sampling**
    Generate 10,000 samples for baseline and test sets:
    ```bash
