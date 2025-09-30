@@ -15,6 +15,68 @@ The approach combines:
 
 ---
 
+## 1) Model Summary (What is being modeled?)
+
+- **Physical model (forward code):** porous-media flow (e.g., steady Darcy), solved by your application code (external repo / file).
+- **Random medium:** the **log-permeability** field is modeled as a **Gaussian Random Field (GRF)** and **parameterized by a truncated Karhunen–Loève (KL) expansion**.
+- **KL parameterization (truncated to `M` modes):**
+
+  \[
+  \log K(z) \;=\; \mu \;+\; \sum_{i=1}^M \underbrace{s_i \sqrt{\lambda_i}}_{\text{uncertainty scale}} \; x_i \; \phi_i(z),
+  \]
+
+  where
+  - \( \mu \) is the mean log-permeability,
+  - \( (\lambda_i, \phi_i) \) are KL eigenpairs of the GRF covariance,
+  - \( s_i \) are **uncertainty/scale constants per mode** (see §3),
+  - \( x = (x_1,\dots,x_M) \) are the **independent parameters**.
+
+- **Parameter prior:** by default we take the **KL coefficients \(x_i\) to be independent standard normals**,  
+  \[
+  x \sim \mathcal N(0, I_M).
+  \]
+  (If you instead treat the *scaled* coefficients \(\xi_i = s_i \sqrt{\lambda_i}\, x_i\) as Gaussian with non-unit variances, adjust the rate function accordingly; see §2 and §3.)
+
+- **Quantity of Interest (QoI):** a scalar functional extracted from each forward solve (examples: breakthrough time at a sensor, max hydraulic head over the domain, flux through an outflow boundary, etc.). See **§2.2** for how/where to set your QoI.
+
+---
+
+## 2) LDT Ingredients You Must Define
+
+### 2.1 Rate Function \(I(\cdot)\)
+The **rate function** encodes the prior on parameters and governs the tail-biased sampling:
+
+- **If the parameters are the standardized KL coefficients \(x \sim \mathcal N(0, I)\):**
+  \[
+  I(x) \;=\; \tfrac12 \|x\|_2^2 \;=\; \tfrac12 \sum_{i=1}^M x_i^2.
+  \]
+
+- **If the parameters are the *scaled* coefficients \(\xi_i = s_i\sqrt{\lambda_i}\,x_i\) with \(\xi \sim \mathcal N(0, \mathrm{diag}(\sigma_1^2,\dots,\sigma_M^2))\):**
+  \[
+  I(\xi) \;=\; \tfrac12 \sum_{i=1}^M \left(\frac{\xi_i}{\sigma_i}\right)^2.
+  \]
+
+> ⚠️ **Consistency requirement:** The exact form of \(I\) you implement **must match** the parameterization used by the forward/application code. In particular, the **mode-wise uncertainty constants** (the \(s_i\) and any additional scalings) must be **identical** between the forward model and your rate function. See §3.
+
+**Where to edit in this repo:**  
+- Define/modify the rate function in **`rate_function.jl`** (or the corresponding function used by `generate_tail_sample.jl`).  
+- Search for `rate(` or `rate_function(` as an entry point if the file name differs.  
+- Add comments near the constants explaining the mapping you assume (standardized \(x\) vs scaled \(\xi\)).
+
+### 2.2 Quantity of Interest (QoI)
+Define a function that maps a forward solution (and/or boundary traces) to a **scalar** QoI.
+
+**Where to edit in this repo:**  
+- Implement/adjust the QoI in **`qoi.jl`** (or the helper where QoI is currently computed during runs; often referenced by `generate_tail_sample.jl` and `brute_force_sampling.jl`).  
+- Search for `qoi(` to locate it.
+
+> Tip: Keep the QoI *pure* (no global state); document its physical meaning and units in a comment block.
+
+
+
+
+
+
 ## Repository Structure
 
 - `supplement_functions.jl`  
