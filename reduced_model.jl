@@ -1,3 +1,26 @@
+# ================================================================
+# reduced_model.jl
+#
+# Purpose:
+#   Build and evaluate the Reduced-Order Model (ROM) using data
+#   generated from sampling runs.
+#
+# Workflow:
+#   1. Reads previously saved snapshot/QoI data from a `.jld2` file.
+#   2. Calls `reduced_model_error()` to:
+#        - construct the ROM (e.g., POD basis projection),
+#        - evaluate the ROM on held-out samples,
+#        - compute error metrics.
+#   3. Saves the ROM errors into a new `.jld2` file for later analysis.
+#
+# Notes:
+#   - Input data must already be generated (via `generate_tail_sample.jl`
+#     and `brute_force_sampling.jl`).
+#   - The ROM construction is sensitive to the snapshot set; ensure that
+#     sampling has sufficiently captured both typical and tail events.
+#   - Outputs are intended for validation and model-quality assessment.
+# ================================================================
+
 include("supplement_functions.jl")
 
 @load "sampled_tails.jld2" x_tail h_tail f_tail isweight_tail;
