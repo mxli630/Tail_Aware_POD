@@ -55,6 +55,7 @@ Any new application only requires redefining the **rate function** and the **QoI
 - The constants `lambda`, `mu`, and `z` defined in `generate_tail_samples.jl` need to be changed once either of the followings is changed:
    1) the the parameters of the Gaussian random field,
    2) the QoI or the definition of tail.
+  
   The constants are chosen for numerical purposes, so that the optimization program using BFGS can converge successfully. To avoid mistakes, the constants are defined in one place in the code and are heavily commented.
 - The rate function and its gradient need to be changed once the distribution of the random parameter is changed.
 
