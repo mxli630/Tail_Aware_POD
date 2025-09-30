@@ -1,3 +1,13 @@
+# ================================================================
+# supplemental_functions.jl
+#
+# Purpose:
+#   Utility functions and wrappers for seeding RNG, data handling,
+#   and calling the forward solver.
+#
+# Notes:
+#   - Contains helper routines used across sampling and ROM scripts.
+# ================================================================
 include(joinpath(@__DIR__, "external", "weeds_fracture.jl"))
 using Statistics
 using Plots
