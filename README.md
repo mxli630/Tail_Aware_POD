@@ -19,49 +19,15 @@ The approach combines:
 
 The framework is based on two key components:
 
-- **Rate function**: Encodes the large deviation principle and depends on the uncertainty in the Karhunen–Loève (KL) modes.  
-- **Quantity of Interest (QoI)**: Defines the output being measured (e.g., breakthrough time, maximum head, etc.).  
-
+- **Quantity of Interest (QoI)**: Defines the output being measured (e.g., breakthrough time, maximum head, etc.). 
+- **Rate function**: Encodes the large deviation principle and depends on the uncertain parameter and the extent of rariness in QoI.  
+ 
 Any new application only requires redefining the **rate function** and the **QoI function**, provided that the constants and distributions are consistent across the code base.
 
 ---
 
 
-## 2) LDT Ingredients You Must Define
-
-### 2.1 Rate Function $I(\cdot)$
-The **rate function** encodes the prior on parameters and governs the tail-biased sampling:
-
-- **If the parameters are the standardized KL coefficients $x \sim \mathcal N(0, I)$:**
-  $I(x) = \tfrac12 \|x\|_2^2 = \tfrac12 \sum_{i=1}^M x_i^2.$
-
-- **If the parameters are the *scaled* coefficients \(\xi_i = s_i\sqrt{\lambda_i}\,x_i\) with \(\xi \sim \mathcal N(0, \mathrm{diag}(\sigma_1^2,\dots,\sigma_M^2))\):**
-  \[
-  I(\xi) \;=\; \tfrac12 \sum_{i=1}^M \left(\frac{\xi_i}{\sigma_i}\right)^2.
-  \]
-
-> ⚠️ **Consistency requirement:** The exact form of \(I\) you implement **must match** the parameterization used by the forward/application code. In particular, the **mode-wise uncertainty constants** (the \(s_i\) and any additional scalings) must be **identical** between the forward model and your rate function. See §3.
-
-**Where to edit in this repo:**  
-- Define/modify the rate function in **`rate_function.jl`** (or the corresponding function used by `generate_tail_sample.jl`).  
-- Search for `rate(` or `rate_function(` as an entry point if the file name differs.  
-- Add comments near the constants explaining the mapping you assume (standardized \(x\) vs scaled \(\xi\)).
-
-### 2.2 Quantity of Interest (QoI)
-Define a function that maps a forward solution (and/or boundary traces) to a **scalar** QoI.
-
-**Where to edit in this repo:**  
-- Implement/adjust the QoI in **`qoi.jl`** (or the helper where QoI is currently computed during runs; often referenced by `generate_tail_sample.jl` and `brute_force_sampling.jl`).  
-- Search for `qoi(` to locate it.
-
-> Tip: Keep the QoI *pure* (no global state); document its physical meaning and units in a comment block.
-
-
-
-
-
-
-## Repository Structure
+## 2. Repository Structure
 
 - `supplement_functions.jl`  
   Core functions implementing POD, weighting, sampling, and ROM construction  
@@ -88,7 +54,19 @@ Define a function that maps a forward solution (and/or boundary traces) to a **s
 
 ---
 
-## Installation & Setup
+
+## 3. Constants need to be changed for a different model
+- The constants `lambda`, `mu`, and `z` defined in `generate_tail_samples.jl` need to be changed once either of the followings is changed:
+   1) the the parameters of the Gaussian random field,
+   2) the QoI or the definition of tail,
+   3) the model.
+- The constants are chosen for numerical purposes, so that the optimization program using BFGS can converge successfully.
+- To avoid mistakes, the constants are defined in one place in the code and are heavily commented.
+
+--- 
+
+
+## 4. Installation & Setup
 
 This project depends on [DPFEHM](https://github.com/lanl/DPFEHM).  
 
