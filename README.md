@@ -21,9 +21,7 @@ The approach combines:
 - **Random medium:** the **log-permeability** field is modeled as a **Gaussian Random Field (GRF)** and **parameterized by a truncated Karhunen–Loève (KL) expansion**.
 - **KL parameterization (truncated to `M` modes):**
 
-  $$
-  \log K(z) \;=\; \mu \;+\; \sum_{i=1}^M \underbrace{s_i \sqrt{\lambda_i}}_{\text{uncertainty scale}} \; x_i \; \phi_i(z),
-  $$
+  $\log K(z) \;=\; \mu \;+\; \sum_{i=1}^M \underbrace{s_i \sqrt{\lambda_i}}_{\text{uncertainty scale}} \; x_i \; \phi_i(z)$,
 
   where
   - $\mu$ is the mean log-permeability,
