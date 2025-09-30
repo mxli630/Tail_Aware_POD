@@ -1,6 +1,6 @@
 # Reduced Order Modeling with Large Deviation Theory
 
-This repository provides code for generating **Reduced Order Models (ROMs)** for PDE systems with random parameters, with a focus on **accurate prediction of rare tail events**.  
+This repository provides code for generating **Reduced Order Models (ROMs)** for PDE systems with random parameters, with a focus on **accurate prediction of rare tail events**. We use **large-deviation-theory(LDT)-guided sampling** to generate informative parameter realizations (including tail/rare events), then build the ROM from the resulting snapshot set. 
 
 The approach combines:
 - **Proper Orthogonal Decomposition (POD)** for reduced basis construction  
@@ -8,6 +8,10 @@ The approach combines:
 - **Shifted sampling**: instead of sampling around the original mean, samples are drawn around the optimizer  
 - **Importance sampling weights**: used to ensure samples remain consistent with the original distribution  
 - **Tail-focused weights**: further bias the snapshot matrix so that extreme (tail) samples contribute more to the reduced model  
+
+> **Two things every user must provide/understand for a new application:**
+> 1) the **Rate Function** (consistent with the parameter prior and scaling), and  
+> 2) the **Quantity of Interest (QoI)** (what you measure from a forward run).
 
 ---
 
