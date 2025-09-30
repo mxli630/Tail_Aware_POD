@@ -21,15 +21,15 @@ The approach combines:
 - **Random medium:** the **log-permeability** field is modeled as a **Gaussian Random Field (GRF)** and **parameterized by a truncated Karhunen–Loève (KL) expansion**.
 - **KL parameterization (truncated to `M` modes):**
 
-  \[
+  $$
   \log K(z) \;=\; \mu \;+\; \sum_{i=1}^M \underbrace{s_i \sqrt{\lambda_i}}_{\text{uncertainty scale}} \; x_i \; \phi_i(z),
-  \]
+  $$
 
   where
-  - \( \mu \) is the mean log-permeability,
-  - \( (\lambda_i, \phi_i) \) are KL eigenpairs of the GRF covariance,
-  - \( s_i \) are **uncertainty/scale constants per mode** (see §3),
-  - \( x = (x_1,\dots,x_M) \) are the **independent parameters**.
+  - $\mu$ is the mean log-permeability,
+  - $(\lambda_i, \phi_i)$ are KL eigenpairs of the GRF covariance,
+  - $s_i$ are **uncertainty/scale constants per mode** (see §3),
+  - $x = (x_1,\dots,x_M)$ are the **independent parameters**.
 
 - **Parameter prior:** by default we take the **KL coefficients \(x_i\) to be independent standard normals**,  
   \[
