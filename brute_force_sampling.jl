@@ -1,5 +1,20 @@
+# ================================================================
+# brute_force_sampling.jl
+#
+# Purpose:
+#   Run baseline Monte Carlo sampling of the forward model and compute
+#   the Quantity of Interest (QoI).
+#
+# Notes:
+#    Provides an empirical distribution of the QoI.
+#
+# Outputs:
+#    Three `.jld2` files that save the sampled parameters, QoIs, 
+#    and snapshots.
+# ================================================================
+
 include("supplement_functions.jl")
-using FileIO, JLD2
+
 
 numruns = 10000
 paramlen = 3*num_eigenvectors+1
