@@ -15,24 +15,17 @@ The approach combines:
 
 ---
 
-## 1) Model Summary (What is being modeled?)
+## 1. Overview
 
-- **Physical model (forward code):** porous-media flow (e.g., steady Darcy), solved by your application code (external repo / file).
-- **Random medium:** the **log-permeability** field is modeled as a **Gaussian Random Field (GRF)** and **parameterized by a truncated Karhunen–Loève (KL) expansion**.
-- **KL parameterization (truncated to `M` modes):**
+The framework is based on two key components:
 
-  $\log K(z) = \mu + \sum_{i=1}^M \sqrt{\lambda_i} x_i \phi_i(z),$
-  where
-  - $\mu$ is the mean log-permeability,
-  - $(\lambda_i, \phi_i)$ are KL eigenpairs of the GRF covariance,
-  - $x = (x_1,\dots,x_M)$ are the **independent parameters**.
+- **Rate function**: Encodes the large deviation principle and depends on the uncertainty in the Karhunen–Loève (KL) modes.  
+- **Quantity of Interest (QoI)**: Defines the output being measured (e.g., breakthrough time, maximum head, etc.).  
 
-- **Parameter prior:** by default we take the **KL coefficients $x_i$ to be independent standard normals**,  
-  $x \sim \mathcal N(0, I_M).$
-
-- **Quantity of Interest (QoI):** a scalar functional extracted from each forward solve (examples: breakthrough time at a sensor, max hydraulic head over the domain, flux through an outflow boundary, etc.). In our example, we set the QoI as the pressure head at a critical point.
+Any new application only requires redefining the **rate function** and the **QoI function**, provided that the constants and distributions are consistent across the code base.
 
 ---
+
 
 ## 2) LDT Ingredients You Must Define
 
