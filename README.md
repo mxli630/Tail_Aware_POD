@@ -9,10 +9,6 @@ The approach combines:
 - **Importance sampling weights**: used to ensure samples remain consistent with the original distribution  
 - **Tail-focused weights**: further bias the snapshot matrix so that extreme (tail) samples contribute more to the reduced model  
 
-> **Two things every user must provide/understand for a new application:**
-> 1) the **Rate Function** (consistent with the parameter prior and scaling), and  
-> 2) the **Quantity of Interest (QoI)** (what you measure from a forward run).
-
 ---
 
 ## 1. Overview
@@ -34,7 +30,7 @@ Any new application only requires redefining the **rate function** and the **QoI
 
 - `external/`  
   Contains the setup for a **steady-state 2D Darcy flow** example with a random Gaussian log-permeability field (via KL expansion), including a **caprock with vertical fractures**.
-  This example was adapted from [DPFEHM](https://github.com/lanl/DPFEHM), and the necessary file has been copied here so that the repository runs standalone.  
+  This example was adapted from [DPFEHM]((https://github.com/OrchardLANL/DPFEHM.jl.git)), and the necessary file has been copied here so that the repository runs standalone.  
 
 
 - `brute_force_sampling.jl`  
