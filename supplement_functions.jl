@@ -7,6 +7,7 @@
 #
 # Notes:
 #   - Contains helper routines used across sampling and ROM scripts.
+#   - QoI and its gradient are defined in `f(x)` and `grad_f(x)`.
 # ================================================================
 include(joinpath(@__DIR__, "external", "weeds_fracture.jl"))
 using Statistics
@@ -21,8 +22,11 @@ isfreenode, nodei2freenodei, freenodei2nodei = DPFEHM.getfreenodes(length(Qs), d
 ns_reverse = [201,101]
 nfreenode = sum(isfreenode)
 
+
 f(x) = solveforh(x2logKs(x))[critical_point_node]*9.807*997*1e-6 #convert from head (meters) to pressure (MPa) (for water 25 C)
 grad_f(x) = Zygote.gradient(f, x)[1]
+
+
 
 function solveforhfree(logKs)
     Ks_neighbors = logKs2Ks_neighbors(logKs)
