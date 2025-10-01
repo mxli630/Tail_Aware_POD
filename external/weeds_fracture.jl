@@ -55,8 +55,8 @@ mins = [0, 0] #meters
 maxs = [width, sum(heights)] #meters
 coords, neighbors, areasoverlengths, volumes = DPFEHM.regulargrid2d(mins, maxs, ns, thickness)
 # Set up the eigenvector parameterization of the geostatistical log-permeability field
-# num_eigenvectors = 200
 num_eigenvectors = 15
+parameter_len = 3*num_eigenvectors+1
 sigma = 1.0
 lambda = 50
 mean_log_conductivities = [log(1e-4), log(1e-8), log(1e-3)] #log(1e-4 [m/s]) -- similar to a pretty porous oil reservoir
