@@ -17,13 +17,13 @@ include("supplement_functions.jl")
 
 
 numruns = 10000
-paramlen = 3*num_eigenvectors+1
-all_x = Array{Float64}(undef, paramlen, numruns)
+
+all_x = Array{Float64}(undef, parameter_len, numruns)
 all_h = Array{Float64}(undef, nfreenode, numruns)
 all_f = Float64[]
 
 for i = 1:numruns
-  x = randn(paramlen)
+  x = randn(parameter_len)
   all_x[:,i] = x
   hfree = solveforhfree(x2logKs(x))
   all_h[:,i] = hfree
