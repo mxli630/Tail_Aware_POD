@@ -104,6 +104,18 @@ function sample_around_optimizer(x_res, nsamp = 1000)
     return x_around, h_around, all_f, isweight
 end
 
+function reduced_sln(x,P)
+    # want P to be nfreenode * nMode
+    logKs = x2logKs(x)
+    Ks = logKs2Ks_neighbors(logKs);
+    args = (zeros(sum(isfreenode)),Ks,neighbors,areasoverlengths,dirichletnodes,dirichleths,Qs,ones(length(Qs)),ones(length(Qs)));
+    A = DPFEHM.groundwater_h(args...);
+    b = -DPFEHM.groundwater_residuals(args...);
+    Ared = transpose(P)*A*P;
+    bred = transpose(P)*b;
+    hfreered = Ared\bred;
+    return P*hfreered;
+end
 
 function reduced_model_error(param,sample,nmode, mode)
     # param is a collection of nsamps of single parameters, 
